@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerClass : MonoBehaviour
+public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 {
     #region Variables
     private Rigidbody2D _rb;
@@ -16,6 +16,8 @@ public abstract class PlayerClass : MonoBehaviour
     protected int _maxHp;
     private int _hp;
     private float _xInput;
+    private float _fallMult = 2.5f;
+    private float _lowFallMult = 2f;
     private bool _isGrounded;
     #endregion
 
@@ -32,6 +34,11 @@ public abstract class PlayerClass : MonoBehaviour
     protected virtual void Update()
     {
         MoveAndJump();
+    }
+
+    public void ReciveDamage(int damage)
+    {
+        _hp -= damage;
     }
 
     private void GetXInputs()// Get A and D inputs
@@ -57,6 +64,15 @@ public abstract class PlayerClass : MonoBehaviour
             {
                 _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
             }
+        }
+
+        if (_rb.velocity.y < 0) // Better Jump, better fall
+        {
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (_fallMult - 1) * Time.deltaTime;
+        }
+        else if (_rb.velocity.y > 0 && (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.Space)))
+        {
+            _rb.velocity += Vector2.up * Physics2D.gravity.y * (_lowFallMult - 1) * Time.deltaTime;
         }
     }
 }
