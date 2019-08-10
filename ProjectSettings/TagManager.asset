@@ -17,9 +17,9 @@ TagManager:
   - PostProcessing
   - Enemy
   - GroundOrWall
-  - 
-  - 
-  - 
+  - AllyBullet
+  - EnemyBullet
+  - Player
   - 
   - 
   - 
