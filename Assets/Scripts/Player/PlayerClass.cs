@@ -8,6 +8,7 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
     private Rigidbody2D _rb;
     private AudioSource _source;
     private Animator _anim;
+    private GunClass _gun;
 
     [SerializeField] protected float _moveSpeed;
     [SerializeField] protected float _jumpForce;
@@ -29,11 +30,13 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
         _rb = GetComponent<Rigidbody2D>();
         _source = GetComponent<AudioSource>();
         _anim = GetComponent<Animator>();
+        _gun = GetComponentInChildren<GunClass>();
     }
 
     protected virtual void Update()
     {
         MoveAndJump();
+        SetAnimVariables();
     }
 
     public void ReciveDamage(int damage)
@@ -79,5 +82,32 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 
         _anim.SetFloat("AbsVelX", Mathf.Abs(_rb.velocity.x));
         _anim.SetFloat("VelY", _rb.velocity.y);
+    }
+
+    private void SetAnimVariables()
+    {
+        // Set Run direction by aim position
+        if (_gun.Angle > 90 || _gun.Angle < -90)
+        {
+            if (_rb.velocity.x >= .5f)
+            {
+                _anim.SetFloat("LookBack", 1);
+            }
+            else if (_rb.velocity.x <= -.5f)
+            {
+                _anim.SetFloat("LookBack", 0);
+            }
+        }
+        else
+        {
+            if (_rb.velocity.x >= .5f)
+            {
+                _anim.SetFloat("LookBack", 0);
+            }
+            else if (_rb.velocity.x <= -.5f)
+            {
+                _anim.SetFloat("LookBack", 1);
+            }
+        }
     }
 }

@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class GunClass : MonoBehaviour
 {
-    [SerializeField] private Transform _bulletSpawnPosition;
-    private ReloadBar _reloadInterface;
+    public float Angle;
     protected float _damage = 1;
     protected float _magSize = 12;
     protected float _reloadTime = 5;
     protected float _shootDelay = .2f;
+    private ReloadBar _reloadInterface;
     private float _timeSinceLastShoot;
     private float _delay;
+    [SerializeField] private Transform _bulletSpawnPosition;
     [SerializeField] private bool _canShoot;
     [SerializeField] private float _bulletsShooted;
     private SpriteRenderer _sprite;
     private Camera _camera;
     private SpriteRenderer _playerSprite;
+    private Rigidbody2D _playerRb;
     private Animator _animator;
+    private Animator _playerAnimator;
     private AudioSource _source;
 
     virtual protected void Start()
@@ -27,6 +30,8 @@ public class GunClass : MonoBehaviour
         _sprite = GetComponent<SpriteRenderer>();
         _playerSprite = FindObjectOfType<PlayerClass>().GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
+        _playerRb = _playerSprite.GetComponent<Rigidbody2D>();
+        _playerAnimator = _playerSprite.GetComponent<Animator>();
         _source = GetComponent<AudioSource>();
         _delay = _shootDelay;
         _canShoot = true;
@@ -43,11 +48,19 @@ public class GunClass : MonoBehaviour
     private void AimAtMouse()
     {
         var dir = Input.mousePosition - _camera.WorldToScreenPoint(transform.position);
-        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        _sprite.flipY = (Mathf.Abs(angle) > 90);
+        Angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        _sprite.flipY = (Mathf.Abs(Angle) > 90);
 
-        _playerSprite.flipX = (Mathf.Abs(angle) > 90);
-        transform.rotation = Quaternion.AngleAxis(-angle, Vector3.back);
+        if ((Mathf.Abs(Angle) > 90))
+        {
+            _playerSprite.transform.rotation = Quaternion.Euler(0,180,0);
+        }
+        else
+        {
+            _playerSprite.transform.rotation = Quaternion.Euler(0,0,0);
+        }
+
+        transform.rotation = Quaternion.AngleAxis(-Angle, Vector3.back);
     }
 
     private void DelayCount()
