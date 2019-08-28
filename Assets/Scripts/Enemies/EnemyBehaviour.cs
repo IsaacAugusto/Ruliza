@@ -4,42 +4,64 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    delegate void StateDelegate();
+    StateDelegate State;
+    StateDelegate Patrol;
+    StateDelegate Chase;
+
+
+    private Collider2D _player;
+    private RaycastHit2D[] _hits;
+
     private Rigidbody2D _rb;
+    private float _detectDist = 3;
+    private Animator _anim;
+    private WaitForSeconds PatrolWait = new WaitForSeconds(2);
     private Coroutine _coroutine;
-    delegate void MoveDelegate();
-    MoveDelegate Move;
     private bool _waiting = false;
     private float _speed = 5;
     void Start()
     {
-        Move = MoveFoward;
         _rb = GetComponent<Rigidbody2D>();
-        _speed = 5;
+        _anim = GetComponent<Animator>();
+        SetPatrolState();
+        State = Patrol;
     }
 
     void Update()
     {
-        Move();
-        CheckGround();
-        Debug.DrawRay(transform.position,((Vector2)transform.right -Vector2.up) * 5);
+        State();
+        SetAnimatorVariables();
+    }
+
+    private void SetPatrolState()
+    {
+        Patrol += CheckGround;
+        Patrol += MoveFoward;
+        Patrol += DetectPlayer;
     }
 
     private IEnumerator PatrolTurnAround()
     {
         _waiting = true;
-        Move = StopMoving;
-        yield return new WaitForSeconds(2);
+        yield return PatrolWait;
         TurnAround();
         _waiting = false;
-        Move = MoveFoward;
         _coroutine = null;
     }
 
     private void MoveFoward()
     {
-        _rb.constraints = RigidbodyConstraints2D.None;
-        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        _rb.velocity = new Vector2(transform.right.x * _speed, _rb.velocity.y);
+        if (!_waiting)
+        {
+            _rb.constraints = RigidbodyConstraints2D.None;
+            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            _rb.velocity = new Vector2(transform.right.x * _speed, _rb.velocity.y);
+        }
+        else
+        {
+            _rb.velocity = Vector2.zero;
+        }
     }
 
     private void StopMoving()
@@ -66,6 +88,19 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    private void DetectPlayer()
+    {
+        _player = Physics2D.OverlapCircle(transform.position, _detectDist, LayerMask.GetMask("Player"));
+        if (_player != null)
+        {
+            _hits = Physics2D.RaycastAll(transform.position, _player.transform.position, Vector2.Distance(transform.position, _player.transform.position));
+            foreach (RaycastHit2D hit in _hits)
+            {
+                Debug.Log(hit.transform.name);
+            }
+        }
+    }
+
     private void TurnAround()
     {
         if (transform.rotation.y == 0)
@@ -77,4 +112,11 @@ public class EnemyBehaviour : MonoBehaviour
             transform.Rotate(0, -180, 0);
         }
     }
+
+    #region Animator
+    private void SetAnimatorVariables()
+    {
+        _anim.SetInteger("VelX", Mathf.Abs((int)_rb.velocity.x));
+    }
+    #endregion
 }
