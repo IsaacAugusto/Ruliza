@@ -39,7 +39,7 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
         SetAnimVariables();
     }
 
-    public void ReciveDamage(int damage)
+    public void ReciveDamage(int damage) // Recive damage passed as argument
     {
         _hp -= damage;
     }
@@ -51,9 +51,9 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 
     private void CheckGround()// Check if player is toching the ground
     {
-        _isGrounded = Physics2D.Raycast(transform.position, Vector2.down, (transform.localScale.y + 1), _groundOrWallLayer)
-        || Physics2D.Raycast(transform.position + (Vector3.right) * transform.localScale.x/2, Vector2.down, (transform.localScale.y + 1), _groundOrWallLayer)
-        || Physics2D.Raycast(transform.position + (Vector3.left) * transform.localScale.x/2, Vector2.down, (transform.localScale.y + 1), _groundOrWallLayer);
+        _isGrounded = Physics2D.Raycast(transform.position, Vector2.down, (transform.localScale.y + 1.5f), _groundOrWallLayer)
+        || Physics2D.Raycast(transform.position + (Vector3.right) * transform.localScale.x/2, Vector2.down, (transform.localScale.y + 1.5f), _groundOrWallLayer)
+        || Physics2D.Raycast(transform.position + (Vector3.left) * transform.localScale.x/2, Vector2.down, (transform.localScale.y + 1.5f), _groundOrWallLayer);
     }
 
     private void MoveAndJump()// Controlls move and jump
