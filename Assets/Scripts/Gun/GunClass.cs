@@ -109,8 +109,10 @@ public class GunClass : MonoBehaviour
                 var bullet = BulletPool.Instance.GetBulletFromPool();
                 bullet.GetComponent<BulletClass>().Damage = _damage;
                 bullet.transform.position = _bulletSpawnPosition.position;
-                _source.Play();
                 bullet.transform.rotation = transform.rotation;
+                TrailRenderer trail = bullet.GetComponent<TrailRenderer>();
+                trail.Clear();
+                _source.Play();
                 _delay = _shootDelay;
                 _bulletsShooted++;
 
