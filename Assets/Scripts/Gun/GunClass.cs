@@ -114,6 +114,7 @@ public class GunClass : MonoBehaviour
                 _delay = _shootDelay;
                 _bulletsShooted++;
 
+                CameraAnimator.ShakeCamera();
                 _animator.SetTrigger("Shoot");
             }
         }
