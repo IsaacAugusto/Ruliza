@@ -14,7 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
     private RaycastHit2D[] _hits;
 
     private Rigidbody2D _rb;
-    private float _detectDist = 3;
+    private float _detectDist = 10;
     private Animator _anim;
     private WaitForSeconds PatrolWait = new WaitForSeconds(2);
     private Coroutine _coroutine;
@@ -25,6 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         SetPatrolState();
+        SetChaseState();
         State = Patrol;
     }
 
@@ -93,11 +94,50 @@ public class EnemyBehaviour : MonoBehaviour
         _player = Physics2D.OverlapCircle(transform.position, _detectDist, LayerMask.GetMask("Player"));
         if (_player != null)
         {
-            _hits = Physics2D.RaycastAll(transform.position, _player.transform.position, Vector2.Distance(transform.position, _player.transform.position));
-            foreach (RaycastHit2D hit in _hits)
+            _hits = Physics2D.RaycastAll(transform.position, _player.transform.position - transform.position);
+            if (_hits[1].transform == _player.transform)
             {
-                Debug.Log(hit.transform.name);
+                State = Chase;
             }
+            else
+            {
+                State = Patrol;
+            }
+        }
+        else
+        {
+            State = Patrol;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, _detectDist);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position,  _player.transform.position - transform.position);
+    }
+
+    private void SetChaseState()
+    {
+        Chase += LookToPlayerDirection;
+        Chase += WalkToPlayer;
+        Chase += DetectPlayer;
+    }
+
+    private void WalkToPlayer()
+    {
+        _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed);
+    }
+
+    private void LookToPlayerDirection()
+    {
+        if (_player.transform.position.x < transform.position.x)
+        {
+            transform.rotation = new Quaternion(0, 180, 0, 0);
+        }
+        else if (_player.transform.position.x > transform.position.x)
+        {
+            transform.rotation = new Quaternion(0, 0, 0, 0);
         }
     }
 

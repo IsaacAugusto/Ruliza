@@ -17539,6 +17539,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27103,6 +27108,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27178,6 +27188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27252,6 +27267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Skeleton (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
@@ -27447,6 +27467,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Skeleton (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
@@ -31160,6 +31185,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Skeleton (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3643657086910928366, guid: 44672127abe2a314ab75a5f873656fc7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3643657086910928362, guid: 44672127abe2a314ab75a5f873656fc7,
         type: 3}
