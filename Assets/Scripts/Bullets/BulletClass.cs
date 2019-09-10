@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletClass : MonoBehaviour
 {
-    public float Damage = 1;
+    public int Damage = 1;
     [SerializeField] private float _speed;
     private Rigidbody2D _rb;
     private float _startTime;
@@ -42,11 +42,11 @@ public class BulletClass : MonoBehaviour
         }
     }
 
-    private void DealDamage(float damage, Collider2D collision)
+    private void DealDamage(int damage, Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<IDamageble<float>>() != null)
+        if (collision.gameObject.GetComponent<IDamageble<int>>() != null)
         {
-            collision.gameObject.GetComponent<IDamageble<float>>().ReciveDamage(damage);
+            collision.gameObject.GetComponent<IDamageble<int>>().ReciveDamage(damage);
         }
     }
 

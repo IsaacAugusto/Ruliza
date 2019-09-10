@@ -5,7 +5,7 @@ using UnityEngine;
 public class GunClass : MonoBehaviour
 {
     public float Angle;
-    protected float _damage = 1;
+    protected int _damage = 1;
     protected float _magSize = 12;
     protected float _reloadTime = 5;
     protected float _shootDelay = .2f;

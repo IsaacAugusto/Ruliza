@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour
+public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 {
     delegate void StateDelegate();
     StateDelegate State;
@@ -15,6 +15,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private Rigidbody2D _rb;
     private float _detectDist = 10;
+    private float _hp = 10;
     private Animator _anim;
     private WaitForSeconds PatrolWait = new WaitForSeconds(2);
     private Coroutine _coroutine;
@@ -33,6 +34,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         State();
         SetAnimatorVariables();
+        CheckDeath();
     }
 
     private void SetPatrolState()
@@ -61,7 +63,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
         else
         {
-            _rb.velocity = Vector2.zero;
+            _rb.velocity = Vector2.up * _rb.velocity.y;
         }
     }
 
@@ -126,11 +128,19 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void WalkToPlayer()
     {
-        _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed);
+        if ((Mathf.Abs(transform.position.x - _player.transform.position.x)) >= 2)
+        {
+            _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed);
+        }
+        else
+        {
+            _rb.velocity = new Vector2(0, _rb.velocity.y);
+        }
     }
 
     private void LookToPlayerDirection()
     {
+
         if (_player.transform.position.x < transform.position.x)
         {
             transform.rotation = new Quaternion(0, 180, 0, 0);
@@ -159,4 +169,17 @@ public class EnemyBehaviour : MonoBehaviour
         _anim.SetInteger("VelX", Mathf.Abs((int)_rb.velocity.x));
     }
     #endregion
+
+    public void ReciveDamage(int damage)
+    {
+        _hp -= damage;
+    }
+
+    private void CheckDeath()
+    {
+        if (_hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
