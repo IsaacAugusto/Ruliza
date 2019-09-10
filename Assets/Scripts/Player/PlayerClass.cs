@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 {
     #region Variables
+    private bool IsStuned;
+
     private Rigidbody2D _rb;
     private AudioSource _source;
     private Animator _anim;
@@ -41,6 +43,7 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 
     public void ReciveDamage(int damage) // Recive damage passed as argument
     {
+        _anim.Play("Ruhan_Hit");
         _hp -= damage;
     }
 
@@ -61,15 +64,19 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
         GetXInputs();
         CheckGround();
 
-        _rb.velocity = new Vector2(_xInput * _moveSpeed, _rb.velocity.y); // Movement
-
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) // Jump
+        if (!IsStuned)
         {
-            if (_isGrounded)
+            _rb.velocity = new Vector2(_xInput * _moveSpeed, _rb.velocity.y); // Movement
+
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) // Jump
             {
-                _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                if (_isGrounded)
+                {
+                    _rb.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+                }
             }
         }
+
 
         if (_rb.velocity.y < 0) // Better Jump, better fall
         {
@@ -82,6 +89,19 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
 
         _anim.SetFloat("AbsVelX", Mathf.Abs(_rb.velocity.x));
         _anim.SetFloat("VelY", _rb.velocity.y);
+    }
+
+    public void SetStuned(bool value)
+    {
+        IsStuned = value;
+    }
+
+    public IEnumerator KnockBackCoroutine()
+    {
+        SetStuned(true);
+        Debug.Log(IsStuned);
+        yield return new WaitForSeconds(.5f);
+        SetStuned(false);
     }
 
     private void SetAnimVariables()

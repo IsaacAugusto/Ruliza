@@ -9,18 +9,22 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     StateDelegate Patrol;
     StateDelegate Chase;
 
+    [SerializeField] float _atackSpeed = 1;
 
     private Collider2D _player;
     private RaycastHit2D[] _hits;
 
     private Rigidbody2D _rb;
     private float _detectDist = 10;
-    private float _hp = 10;
+    private int _damage = 2;
+    private float _hp = 15;
     private Animator _anim;
     private WaitForSeconds PatrolWait = new WaitForSeconds(2);
-    private Coroutine _coroutine;
+    private Coroutine _turnCoroutine;
+    private Coroutine _attackCoroutine;
     private bool _waiting = false;
     private float _speed = 5;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -50,15 +54,20 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
         yield return PatrolWait;
         TurnAround();
         _waiting = false;
-        _coroutine = null;
+        _turnCoroutine = null;
+    }
+
+    private IEnumerator AttackPlayer()
+    {
+        _anim.Play("Attacking");
+        yield return new WaitForSeconds(_atackSpeed);
+        _attackCoroutine = null;
     }
 
     private void MoveFoward()
     {
         if (!_waiting)
         {
-            _rb.constraints = RigidbodyConstraints2D.None;
-            _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             _rb.velocity = new Vector2(transform.right.x * _speed, _rb.velocity.y);
         }
         else
@@ -69,24 +78,23 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void StopMoving()
     {
-        _rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+        _rb.velocity = Vector2.up * _rb.velocity.y;
     }
 
     private void CheckGround()
     {
         if (!Physics2D.Raycast(transform.position, (Vector2)transform.right - Vector2.up, 5f, LayerMask.GetMask("GroundOrWall")))
         {
-            if (_coroutine == null)
+            if (_turnCoroutine == null)
             {
-                _coroutine = StartCoroutine(PatrolTurnAround());
+                _turnCoroutine = StartCoroutine(PatrolTurnAround());
             }
         }
-        if (Physics2D.Raycast(transform.position, (Vector2)transform.right, 1f, LayerMask.GetMask("GroundOrWall")) ||
-            Physics2D.Raycast((Vector2)transform.position + (Vector2)transform.right, (Vector2)transform.right, .5f, LayerMask.GetMask("Enemy")))
+        if (Physics2D.Raycast(transform.position, (Vector2)transform.right, 1f, LayerMask.GetMask("GroundOrWall")))
         {
-            if (_coroutine == null)
+            if (_turnCoroutine == null)
             {
-                _coroutine = StartCoroutine(PatrolTurnAround());
+                _turnCoroutine = StartCoroutine(PatrolTurnAround());
             }
         }
     }
@@ -128,13 +136,17 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void WalkToPlayer()
     {
-        if ((Mathf.Abs(transform.position.x - _player.transform.position.x)) >= 2)
+        if ((Mathf.Abs(transform.position.x - _player.transform.position.x)) >= 3)
         {
-            _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed);
+            _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed) + Vector2.up * _rb.velocity.y;
         }
         else
         {
             _rb.velocity = new Vector2(0, _rb.velocity.y);
+            if (_attackCoroutine == null)
+            {
+                _attackCoroutine = StartCoroutine(AttackPlayer());
+            }
         }
     }
 
@@ -173,13 +185,39 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     public void ReciveDamage(int damage)
     {
         _hp -= damage;
+        _anim.Play("Hit");
+    }
+
+    private void DeadDamage()
+    {
+        Collider2D circleCollider = GetComponentInChildren<CircleCollider2D>();
+        Collider2D[] overlaps = new Collider2D[3];
+        ContactFilter2D filter = new ContactFilter2D();
+        circleCollider.OverlapCollider(filter, overlaps);
+        foreach (Collider2D colider in overlaps)
+        {
+            if (colider.GetComponent<IDamageble<int>>() != null && colider.tag == "Player")
+             {
+                colider.gameObject.GetComponent<IDamageble<int>>().ReciveDamage(_damage);
+                PlayerClass player = colider.GetComponent<PlayerClass>();
+                StartCoroutine(player.KnockBackCoroutine());
+                player.GetComponent<Rigidbody2D>().velocity = (Vector2.right * (_player.transform.position.x - transform.position.x)) * 5 + Vector2.up * 5;
+             }
+        }
     }
 
     private void CheckDeath()
     {
         if (_hp <= 0)
         {
-            Destroy(this.gameObject);
+            State = CheckDeath;
+            _rb.velocity = Vector2.up * _rb.velocity.y;
+            _anim.Play("Dying");
         }
+    }
+
+    private void DestroyThisEnemy()
+    {
+        Destroy(this.gameObject);
     }
 }
