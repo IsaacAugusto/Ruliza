@@ -9,23 +9,25 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     StateDelegate Patrol;
     StateDelegate Chase;
 
-    [SerializeField] float _atackSpeed = 1;
+    [SerializeField] protected float _atackSpeed = 1;
+    protected float _lateralWallDetectDist = 1;
+    protected float _detectDist = 10;
+    protected int _damage = 2;
+    protected float _hp = 15;
+    protected float _speed = 5;
+
 
     private Collider2D _player;
     private RaycastHit2D[] _hits;
 
     private Rigidbody2D _rb;
-    private float _detectDist = 10;
-    private int _damage = 2;
-    private float _hp = 15;
     private Animator _anim;
     private WaitForSeconds PatrolWait = new WaitForSeconds(2);
     private Coroutine _turnCoroutine;
     private Coroutine _attackCoroutine;
     private bool _waiting = false;
-    private float _speed = 5;
 
-    void Start()
+    protected virtual void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
@@ -34,7 +36,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
         State = Patrol;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         State();
         SetAnimatorVariables();
@@ -83,6 +85,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void CheckGround()
     {
+        Debug.DrawRay(transform.position, ((Vector2)transform.right) * _lateralWallDetectDist);
         if (!Physics2D.Raycast(transform.position, (Vector2)transform.right - Vector2.up, 5f, LayerMask.GetMask("GroundOrWall")))
         {
             if (_turnCoroutine == null)
@@ -90,7 +93,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
                 _turnCoroutine = StartCoroutine(PatrolTurnAround());
             }
         }
-        if (Physics2D.Raycast(transform.position, (Vector2)transform.right, 1f, LayerMask.GetMask("GroundOrWall")))
+        if (Physics2D.Raycast(transform.position, (Vector2)transform.right, _lateralWallDetectDist, LayerMask.GetMask("GroundOrWall")))
         {
             if (_turnCoroutine == null)
             {

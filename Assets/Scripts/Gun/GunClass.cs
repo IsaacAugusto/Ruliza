@@ -6,6 +6,7 @@ public class GunClass : MonoBehaviour
 {
     public float Angle;
     protected int _damage = 1;
+    protected int _bulletsToShoot = 1;
     protected float _magSize = 12;
     protected float _reloadTime = 5;
     protected float _shootDelay = .2f;
@@ -18,15 +19,15 @@ public class GunClass : MonoBehaviour
     private SpriteRenderer _sprite;
     private Camera _camera;
     private SpriteRenderer _playerSprite;
-    private Rigidbody2D _playerRb;
+    protected Rigidbody2D _playerRb;
     private Animator _animator;
     private Animator _playerAnimator;
     private AudioSource _source;
 
     virtual protected void Start()
     {
-         _reloadInterface = FindObjectOfType<ReloadBar>();
         _camera = FindObjectOfType<Camera>();
+         _reloadInterface = FindObjectOfType<ReloadBar>();
         _sprite = GetComponent<SpriteRenderer>();
         _playerSprite = FindObjectOfType<PlayerClass>().GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
@@ -34,6 +35,7 @@ public class GunClass : MonoBehaviour
         _playerAnimator = _playerSprite.GetComponent<Animator>();
         _source = GetComponent<AudioSource>();
         _delay = _shootDelay;
+        _bulletSpawnPosition = transform.GetChild(0).transform;
         _canShoot = true;
     }
 
@@ -99,6 +101,26 @@ public class GunClass : MonoBehaviour
         _canShoot = true;
     }
 
+    protected virtual void BulletSpawn(int bulletsToShoot)
+    {
+        for (int i = 0; i < bulletsToShoot; i++)
+        {
+            var bullet = BulletPool.Instance.GetBulletFromPool();
+            bullet.GetComponent<BulletClass>().Damage = _damage;
+            bullet.transform.position = _bulletSpawnPosition.position;
+            if (bulletsToShoot == 1)
+            {
+                bullet.transform.rotation = transform.rotation;
+            }
+            else
+            {
+                bullet.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + Random.Range(-20, 20));
+            }
+            TrailRenderer trail = bullet.GetComponent<TrailRenderer>();
+            trail.Clear();
+        }
+    }
+
     protected void Fire()
     {
         if (Input.GetMouseButton(0))
@@ -106,12 +128,7 @@ public class GunClass : MonoBehaviour
             if (_delay < 0 && _canShoot)
             {
                 _timeSinceLastShoot = Time.time;
-                var bullet = BulletPool.Instance.GetBulletFromPool();
-                bullet.GetComponent<BulletClass>().Damage = _damage;
-                bullet.transform.position = _bulletSpawnPosition.position;
-                bullet.transform.rotation = transform.rotation;
-                TrailRenderer trail = bullet.GetComponent<TrailRenderer>();
-                trail.Clear();
+                BulletSpawn(_bulletsToShoot);
                 _source.Play();
                 _delay = _shootDelay;
                 _bulletsShooted++;

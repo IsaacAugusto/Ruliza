@@ -99,7 +99,6 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
     public IEnumerator KnockBackCoroutine()
     {
         SetStuned(true);
-        Debug.Log(IsStuned);
         yield return new WaitForSeconds(.5f);
         SetStuned(false);
     }
