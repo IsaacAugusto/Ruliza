@@ -5,17 +5,18 @@ using UnityEngine;
 public class GunClass : MonoBehaviour
 {
     public float Angle;
+    public bool _canShoot;
     protected int _damage = 1;
     protected int _bulletsToShoot = 1;
-    protected float _magSize = 12;
-    protected float _reloadTime = 5;
+    protected int _bullets = 48;
+    protected int _magSize = 12;
+    protected float _reloadTime = 1;
     protected float _shootDelay = .2f;
     private ReloadBar _reloadInterface;
     private float _timeSinceLastShoot;
     private float _delay;
     [SerializeField] private Transform _bulletSpawnPosition;
-    [SerializeField] private bool _canShoot;
-    [SerializeField] private float _bulletsShooted;
+    [SerializeField] private int _bulletsShooted;
     private SpriteRenderer _sprite;
     private Camera _camera;
     private SpriteRenderer _playerSprite;
@@ -77,19 +78,17 @@ public class GunClass : MonoBehaviour
 
     private void ReloadSystem()
     {
-        if (_bulletsShooted > 0)
+        if (_bulletsShooted >= _magSize)
         {
-            if (Time.time - _timeSinceLastShoot >= _reloadTime / 6)
-            {
-                _bulletsShooted -= Time.deltaTime * 5;
-            }
-            if (_bulletsShooted >= _magSize && _canShoot)
-            {
-                _canShoot = false;
-                StartCoroutine(ReloadCoroutine(_reloadTime));
-            }
+            _canShoot = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.R) && _bullets > 0)
+        {
+            StartCoroutine(ReloadCoroutine(_reloadTime));
+        }
+
+        _reloadInterface.ShowBullets(_bullets);
         _reloadInterface.ReloadBarFill(_bulletsShooted, _magSize);
     }
 
@@ -97,7 +96,16 @@ public class GunClass : MonoBehaviour
     {
         _canShoot = false;
         yield return new WaitForSeconds(reloadTime);
-        _bulletsShooted = 0;
+        if (_bullets < _magSize)
+        {
+            _bulletsShooted -= _bullets;
+            _bullets = 0;
+        }
+        else
+        {
+            _bullets -= _bulletsShooted;
+            _bulletsShooted = 0;
+        }
         _canShoot = true;
     }
 

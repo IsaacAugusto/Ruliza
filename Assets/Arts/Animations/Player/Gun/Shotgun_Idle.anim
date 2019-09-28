@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gun_Idle
+  m_Name: Shotgun_Idle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -63,7 +63,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 6812311666992693479, guid: 0f60237e2b261c542b559ca01e99f8fb,
+      value: {fileID: 6793559003010388111, guid: 2311352838a3a134b8c6e002301b538b,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -91,7 +91,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 6812311666992693479, guid: 0f60237e2b261c542b559ca01e99f8fb, type: 3}
+    - {fileID: 6793559003010388111, guid: 2311352838a3a134b8c6e002301b538b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

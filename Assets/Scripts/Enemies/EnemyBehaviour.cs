@@ -123,13 +123,6 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, _detectDist);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position,  _player.transform.position - transform.position);
-    }
-
     private void SetChaseState()
     {
         Chase += LookToPlayerDirection;

@@ -10,5 +10,6 @@ public class Shotgun : GunClass
         _bulletsToShoot = 5;
         _shootDelay = .5f;
         _magSize = 4;
+        _bullets = 5 * _magSize;
     }
 }

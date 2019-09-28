@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class RuhanPlayer : PlayerClass
 {
-    [SerializeField] private int MaxHP = 5;
+    [SerializeField] private float MaxHP = 3;
 
-    protected override void SetStatus(int MaxHP)
+    protected override void SetStatus(float MaxHP)
     {
         _maxHp = MaxHP;
+        _hp = MaxHP;
     }
 
     protected override void Start()

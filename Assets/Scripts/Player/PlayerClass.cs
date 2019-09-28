@@ -16,29 +16,33 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
     [SerializeField] protected float _jumpForce;
     [SerializeField] private LayerMask _groundOrWallLayer;
 
-    protected int _maxHp;
-    private int _hp;
+    private ReloadBar _reloadInterface;
+
+    protected float _maxHp = 3;
+    protected float _hp;
     private float _xInput;
     private float _fallMult = 2.5f;
     private float _lowFallMult = 2f;
     private bool _isGrounded;
     #endregion
 
-    protected abstract void SetStatus(int MaxHP);
+    protected abstract void SetStatus(float MaxHP);
 
     protected virtual void Start()
     {
-        _hp = _maxHp;
         _rb = GetComponent<Rigidbody2D>();
         _source = GetComponent<AudioSource>();
         _anim = GetComponent<Animator>();
         _gun = GetComponentInChildren<GunClass>();
+        _reloadInterface = FindObjectOfType<ReloadBar>();
     }
 
     protected virtual void Update()
     {
         MoveAndJump();
         SetAnimVariables();
+        ChekPlayerHp();
+        _reloadInterface.HealthBarFill(_hp, _maxHp);
     }
 
     public void ReciveDamage(int damage) // Recive damage passed as argument
@@ -101,6 +105,14 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
         SetStuned(true);
         yield return new WaitForSeconds(.5f);
         SetStuned(false);
+    }
+
+    private void ChekPlayerHp()
+    {
+        if (_hp <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void SetAnimVariables()
