@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GunClass : MonoBehaviour
 {
+    public Transform _bulletSpawnPosition;
     public float Angle;
     public bool _canShoot;
     protected int _damage = 1;
@@ -15,7 +16,6 @@ public class GunClass : MonoBehaviour
     private ReloadBar _reloadInterface;
     private float _timeSinceLastShoot;
     private float _delay;
-    [SerializeField] private Transform _bulletSpawnPosition;
     [SerializeField] private int _bulletsShooted;
     private SpriteRenderer _sprite;
     private Camera _camera;

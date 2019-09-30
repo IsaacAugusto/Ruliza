@@ -13,7 +13,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     protected float _lateralWallDetectDist = 1;
     protected float _detectDist = 10;
     protected int _damage = 2;
-    protected float _hp = 15;
+    protected float _hp = 10;
     protected float _speed = 5;
 
 
