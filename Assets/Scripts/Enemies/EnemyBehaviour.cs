@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     [SerializeField] protected float _atackSpeed = 1;
     protected float _lateralWallDetectDist = 1;
+    protected float _atackDistance = 3;
     protected float _detectDist = 10;
     protected int _damage = 2;
     protected float _hp = 10;
@@ -26,6 +27,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     private Coroutine _turnCoroutine;
     private Coroutine _attackCoroutine;
     private bool _waiting = false;
+    private bool _isAtacking = false;
 
     protected virtual void Start()
     {
@@ -61,8 +63,10 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private IEnumerator AttackPlayer()
     {
+        _isAtacking = true;
         _anim.Play("Attacking");
         yield return new WaitForSeconds(_atackSpeed);
+        _isAtacking = false;
         _attackCoroutine = null;
     }
 
@@ -132,7 +136,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void WalkToPlayer()
     {
-        if ((Mathf.Abs(transform.position.x - _player.transform.position.x)) >= 3)
+        if ((Mathf.Abs(transform.position.x - _player.transform.position.x)) >= _atackDistance && !_isAtacking)
         {
             _rb.velocity = ((Vector2.right * (_player.transform.position.x - transform.position.x)).normalized * _speed) + Vector2.up * _rb.velocity.y;
         }
@@ -148,14 +152,16 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void LookToPlayerDirection()
     {
-
-        if (_player.transform.position.x < transform.position.x)
+        if (!_isAtacking)
         {
-            transform.rotation = new Quaternion(0, 180, 0, 0);
-        }
-        else if (_player.transform.position.x > transform.position.x)
-        {
-            transform.rotation = new Quaternion(0, 0, 0, 0);
+            if (_player.transform.position.x < transform.position.x)
+            {
+                transform.rotation = new Quaternion(0, 180, 0, 0);
+            }
+            else if (_player.transform.position.x > transform.position.x)
+            {
+                transform.rotation = new Quaternion(0, 0, 0, 0);
+            }
         }
     }
 
@@ -178,7 +184,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
     }
     #endregion
 
-    public void ReciveDamage(int damage)
+    public virtual void ReciveDamage(int damage)
     {
         _hp -= damage;
         _anim.Play("Hit");
