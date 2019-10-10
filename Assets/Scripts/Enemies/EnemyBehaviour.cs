@@ -220,6 +220,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
 
     private void DestroyThisEnemy()
     {
+        DropLootManager.Instance.EnemyDropBullets(this.transform.position);
         Destroy(this.gameObject);
     }
 }

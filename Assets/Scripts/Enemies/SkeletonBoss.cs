@@ -7,7 +7,7 @@ public class SkeletonBoss : EnemyBehaviour
     [SerializeField] private GameObject _enemyBullet;
     [SerializeField] private GameObject _arena;
     [SerializeField] private BoxCollider2D _arenaEnter;
-    [SerializeField] private Transform _player;
+    private Transform _player;
     private Camera _camera;
 
     protected override void Start()

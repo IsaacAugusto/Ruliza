@@ -74,7 +74,10 @@ public class GunClass : MonoBehaviour
         }
     }
 
-
+    public void AddBullets(int quant)
+    {
+        _bullets += quant;
+    }
 
     private void ReloadSystem()
     {

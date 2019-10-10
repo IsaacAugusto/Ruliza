@@ -64,8 +64,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -1.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1510771186571425059}
   - {fileID: 1792611229727380514}
+  - {fileID: 1510771186571425059}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -264,7 +264,7 @@ Transform:
   m_Children:
   - {fileID: 1510771186323214909}
   m_Father: {fileID: 1510771186466169068}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &3507853500413124543
 AudioSource:
@@ -443,9 +443,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469cba8577a8b284c80b07a7f7f270f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletSpawnPosition: {fileID: 0}
   Angle: 0
   _canShoot: 0
-  _bulletSpawnPosition: {fileID: 0}
   _bulletsShooted: 0
 --- !u!1 &2345945218603335641
 GameObject:
@@ -510,7 +510,7 @@ Transform:
   m_Children:
   - {fileID: 303978046650045444}
   m_Father: {fileID: 1510771186466169068}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5860282159194220544
 AudioSource:
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb05c3f579c5dd543a7d077de6b45e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletSpawnPosition: {fileID: 0}
   Angle: 0
   _canShoot: 0
-  _bulletSpawnPosition: {fileID: 0}
   _bulletsShooted: 0
