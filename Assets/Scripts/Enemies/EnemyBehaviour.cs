@@ -208,7 +208,7 @@ public class EnemyBehaviour : MonoBehaviour, IDamageble<int>
         }
     }
 
-    private void CheckDeath()
+    protected virtual void CheckDeath()
     {
         if (_hp <= 0)
         {

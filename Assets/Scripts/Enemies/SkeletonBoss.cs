@@ -32,6 +32,15 @@ public class SkeletonBoss : EnemyBehaviour
         }
     }
 
+    protected override void CheckDeath()
+    {
+        base.CheckDeath();
+        if (_hp <= 0)
+        {
+            _arena.SetActive(false);
+        }
+    }
+
     public override void ReciveDamage(int damage)
     {
         base.ReciveDamage(damage);

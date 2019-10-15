@@ -72,7 +72,7 @@ public abstract class PlayerClass : MonoBehaviour, IDamageble<int>
         {
             _rb.velocity = new Vector2(_xInput * _moveSpeed, _rb.velocity.y); // Movement
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) // Jump
+            if (Input.GetKeyDown(KeyCode.W)) // Jump
             {
                 if (_isGrounded)
                 {

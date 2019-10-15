@@ -8,6 +8,7 @@ public class ReloadBar : MonoBehaviour
     [SerializeField] private Image _frontImage;
     [SerializeField] private Image _HealthImage;
     [SerializeField] private Text _bullets;
+    [SerializeField] private Text _grenades;
     [SerializeField] private Transform _player;
     public static Camera MyCamera;
 
@@ -32,6 +33,11 @@ public class ReloadBar : MonoBehaviour
     public void ShowBullets(int bullets)
     {
         _bullets.text = bullets.ToString();
+    }
+
+    public void ShowGrenades(int grenades)
+    {
+        _grenades.text = grenades.ToString();
     }
 
     public void HealthBarFill(float health, float maxhealth)

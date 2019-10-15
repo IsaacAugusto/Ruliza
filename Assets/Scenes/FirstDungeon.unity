@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -17483,6 +17483,12 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &248386892 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5718159294654702941, guid: 018d0be837f698e4c82b73ab0e9f7c65,
+    type: 3}
+  m_PrefabInstance: {fileID: 5718159295544696028}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &337899289 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4147777920627415806, guid: 8f755e02f2990f14d8ada988ee419fcd,
@@ -27580,6 +27586,76 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 863645503}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &875100343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875100345}
+  - component: {fileID: 875100346}
+  - component: {fileID: 875100344}
+  m_Layer: 0
+  m_Name: EndGame
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &875100344
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875100343}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.06465912, y: 0.22630596}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.2630615, y: 3.7803402}
+  m_EdgeRadius: 0
+--- !u!4 &875100345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875100343}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 85.3, y: 5.8, z: -89.67969}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &875100346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875100343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d642edb9d9b7d4d83486d83ee7bfce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &886317447
 GameObject:
   m_ObjectHideFlags: 0
@@ -27876,7 +27952,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8b0d37f985857b4468fc2643419adf46, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.193
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -27972,6 +28048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f01d3d17409074a9a267c0e801e5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EndGamePainel: {fileID: 248386892}
 --- !u!1 &945428247
 GameObject:
   m_ObjectHideFlags: 0
@@ -33490,12 +33567,12 @@ PrefabInstance:
     - target: {fileID: 1510771186466169068, guid: 13854977b7a135d4d81c6c422f9e156c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.92
+      value: -12.2
       objectReference: {fileID: 0}
     - target: {fileID: 1510771186466169068, guid: 13854977b7a135d4d81c6c422f9e156c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.84
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 1510771186466169068, guid: 13854977b7a135d4d81c6c422f9e156c,
         type: 3}
@@ -33805,16 +33882,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5718159295471396260, guid: 018d0be837f698e4c82b73ab0e9f7c65,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-    - target: {fileID: 5718159295790648171, guid: 018d0be837f698e4c82b73ab0e9f7c65,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
     - target: {fileID: 5718159295165829488, guid: 018d0be837f698e4c82b73ab0e9f7c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

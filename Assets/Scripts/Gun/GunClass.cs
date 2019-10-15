@@ -14,6 +14,7 @@ public class GunClass : MonoBehaviour
     protected float _reloadTime = 1;
     protected float _shootDelay = .2f;
     private ReloadBar _reloadInterface;
+    private Coroutine _reloadCoroutine;
     private float _timeSinceLastShoot;
     private float _delay;
     [SerializeField] private int _bulletsShooted;
@@ -28,7 +29,7 @@ public class GunClass : MonoBehaviour
     virtual protected void Start()
     {
         _camera = FindObjectOfType<Camera>();
-         _reloadInterface = FindObjectOfType<ReloadBar>();
+        _reloadInterface = FindObjectOfType<ReloadBar>();
         _sprite = GetComponent<SpriteRenderer>();
         _playerSprite = FindObjectOfType<PlayerClass>().GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
@@ -86,9 +87,9 @@ public class GunClass : MonoBehaviour
             _canShoot = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && _bullets > 0)
+        if (Input.GetKeyDown(KeyCode.R) && _bullets > 0 && _reloadCoroutine == null)
         {
-            StartCoroutine(ReloadCoroutine(_reloadTime));
+            _reloadCoroutine = StartCoroutine(ReloadCoroutine(_reloadTime));
         }
 
         _reloadInterface.ShowBullets(_bullets);
@@ -101,8 +102,16 @@ public class GunClass : MonoBehaviour
         yield return new WaitForSeconds(reloadTime);
         if (_bullets < _magSize)
         {
-            _bulletsShooted -= _bullets;
-            _bullets = 0;
+            if (_bullets <= _bulletsShooted)
+            {
+                _bulletsShooted -= _bullets;
+                _bullets = 0;
+            }
+            else
+            {
+                _bullets -= _bulletsShooted;
+                _bulletsShooted = 0;
+            }
         }
         else
         {
@@ -110,6 +119,7 @@ public class GunClass : MonoBehaviour
             _bulletsShooted = 0;
         }
         _canShoot = true;
+        _reloadCoroutine = null;
     }
 
     protected virtual void BulletSpawn(int bulletsToShoot)

@@ -5,20 +5,24 @@ using UnityEngine;
 public class TrowGranade : MonoBehaviour
 {
     [SerializeField] private GameObject _granadePrefab;
+    private int _granadeCount = 3;
     private GunClass gun;
     private List<GameObject> _granadePool = new List<GameObject>();
+    private ReloadBar _reloadInterface;
     private GameObject _poolHolder;
     private float _trowTimer = 2;
 
     void Start()
     {
+        _reloadInterface = FindObjectOfType<ReloadBar>();
+        _granadeCount = 3;
         _poolHolder = new GameObject("GranedePool");
         gun = GetComponentInChildren<GunClass>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && _trowTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.F) && _trowTimer <= 0 && _granadeCount > 0)
         {
             ShootGranade();
         }
@@ -32,6 +36,8 @@ public class TrowGranade : MonoBehaviour
         {
             gun = GetComponentInChildren<GunClass>();
         }
+
+        _reloadInterface.ShowGrenades(_granadeCount);
     }
 
     private void ShootGranade()
@@ -41,6 +47,7 @@ public class TrowGranade : MonoBehaviour
         g.transform.rotation = gun.transform.rotation;
         g.GetComponent<Rigidbody2D>().velocity = g.transform.right * 20;
         _trowTimer = 2;
+        _granadeCount--;
     }
 
     private GameObject GetGranade()
