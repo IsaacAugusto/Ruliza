@@ -1,0 +1,60 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletClass : MonoBehaviour
+{
+    public int Damage = 1;
+    [SerializeField] private float _speed;
+    private Rigidbody2D _rb;
+    private float _startTime;
+    void Start()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnEnable()
+    {
+        _startTime = Time.time;
+    }
+
+    void Update()
+    {
+        GoFoward();
+        DesactivateBulletOverTime();
+    }
+
+    private void GoFoward()
+    {
+        _rb.velocity = transform.TransformDirection(Vector2.right) * _speed;
+    }
+
+    private void DesactivateBullet()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void DesactivateBulletOverTime()
+    {
+        if (Time.time - _startTime >= 3)
+        {
+            DesactivateBullet();
+        }
+    }
+
+    private void DealDamage(int damage, Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<IDamageble<int>>() != null)
+        {
+            collision.gameObject.GetComponent<IDamageble<int>>().ReciveDamage(damage);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        DesactivateBullet();
+        DealDamage(Damage, collision);
+        var particle = HitParticlePool.Instance.GetHitParticle();
+        particle.transform.position = transform.position;
+    }
+}
